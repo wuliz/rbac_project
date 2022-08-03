@@ -1,3 +1,5 @@
 /rbac_common/target/
 /rbac_manager/target/
 /rbac_web/target/
+/.idea/
+/ssm_shiro/target/
