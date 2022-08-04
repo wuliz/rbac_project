@@ -13,6 +13,7 @@
         <module>rbac_manager</module>
         <module>rbac_protal</module>
         <module>rbac_web</module>
+        <module>ssm_shiro</module>
     </modules>
     <dependencies>
         <dependency>
