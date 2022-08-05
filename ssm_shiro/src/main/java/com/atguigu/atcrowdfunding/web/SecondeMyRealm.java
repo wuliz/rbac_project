@@ -2,7 +2,6 @@ package com.atguigu.atcrowdfunding.web;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.realm.AuthenticatingRealm;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.util.ByteSource;
 
 /**
@@ -11,11 +10,11 @@ import org.apache.shiro.util.ByteSource;
  * @author: wuliz
  * @date: 2022/8/4
  */
-public class MyRealm extends AuthenticatingRealm {
+public class SecondeMyRealm extends AuthenticatingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.out.println("first");
+        System.out.println("second");
         //强转
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         //username,password
