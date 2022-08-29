@@ -5,36 +5,52 @@
 
     <!--  多realm配置  -->
     <bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
-        <property name="realms">
+        <!--也可以直接在securityManager中直接配置-->
+        <!--<property name="realms">
             <list>
                 <ref bean="myRealm"></ref>
                 <ref bean="secondMyRealm"></ref>
             </list>
+        </property>-->
+        <!--认证策略-->
+        <property name="authenticationStrategy">
+            <!--全部成功才认证成功-->
+<!--            <bean class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"></bean>-->
+            <!--至少有一个成功就成功-->
+            <!--<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>-->
+            <bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"></bean>
         </property>
-    </bean>
+     </bean>
     <!--自定义Realm-->
     <bean id="myRealm" class="com.atguigu.atcrowdfunding.web.MyRealm">
-        <property name="credentialsMatcher">
+     <!--   <property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
                 <property name="hashAlgorithmName" value="MD5"></property>
                 <property name="hashIterations" value="1024"></property>
             </bean>
-        </property>
+        </property>-->
     </bean>
 
     <bean id="secondMyRealm" class="com.atguigu.atcrowdfunding.web.SecondeMyRealm">
-        <property name="credentialsMatcher">
+        <!--加密方式-->
+        <!--<property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
                 <property name="hashAlgorithmName" value="SHA1"></property>
                 <property name="hashIterations" value="1024"></property>
             </bean>
-        </property>
+        </property>-->
     </bean>
     <!--创建安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
        <!-- <property name="realm" ref="myRealm"/>-->
         <!--多realm配置-->
         <property name="authenticator" ref="authenticator"></property>
+        <property name="realms">
+            <list>
+                <ref bean="myRealm"></ref>
+                <ref bean="secondMyRealm"></ref>
+            </list>
+        </property>
     </bean>
     <bean id="shiroFilter"
           class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -48,6 +64,8 @@
             <value>
                 /shiro/login=anon
                 /shiro/logout=logout
+                /user.jsp=roles[user]
+                /admin.jsp=roles[admin]
                 /empLogin=anon
                 /static/**=anon
                 /upload/**=anon

@@ -33,6 +33,6 @@ public class ShiroController {
             }
 
         }
-        return "redirect:/success";
+        return "list";
     }
 }

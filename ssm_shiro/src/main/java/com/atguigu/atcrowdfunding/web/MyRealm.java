@@ -1,9 +1,15 @@
 package com.atguigu.atcrowdfunding.web;
 
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthenticatingRealm;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+
+import java.util.HashSet;
 
 /**
  * Created by Intellij IDEA.
@@ -11,7 +17,7 @@ import org.apache.shiro.util.ByteSource;
  * @author: wuliz
  * @date: 2022/8/4
  */
-public class MyRealm extends AuthenticatingRealm {
+public class MyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
@@ -43,5 +49,24 @@ public class MyRealm extends AuthenticatingRealm {
 
         System.out.println(authenticationToken);
         return simpleAuthenticationInfo;
+    }
+
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        System.out.println("authorized");
+        HashSet<String> roles = new HashSet<>();
+        //获取登录用户的信息
+        Object principal = principalCollection.getPrimaryPrincipal();
+        //利用登录用户信息获取角色和权限
+        if(principal.equals("admin")){
+            roles.add("admin");
+            roles.add("user");
+        }
+        if(principal.equals("user")){
+            roles.add("user");
+        }
+        //创建SimpleAuthenticationInfo set roles
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo(roles);
+        return simpleAuthorizationInfo;
     }
 }

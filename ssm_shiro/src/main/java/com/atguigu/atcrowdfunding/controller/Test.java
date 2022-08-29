@@ -18,4 +18,14 @@ public class Test {
     public String get(){
         return "1";
     }
+
+    @RequestMapping("/toSuccess")
+    public String toSuccess(){
+        return "success";
+    }
+
+    @RequestMapping("/toSuccess2")
+    public String toSuccess2(){
+        return "redirect:/success.jsp";
+    }
 }
